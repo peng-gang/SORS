@@ -15,7 +15,7 @@ Rcpp::DataFrame getSORC(Rcpp::CharacterVector cnvInfo) {
   
   csg.initSORRatio();
   
-  Rcout << csg.output() << std::endl;
+  //Rcout << csg.output() << std::endl;
   
   std::string strRlt = csg.output();
   std::vector<std::string> vs = split(strRlt, "\n");

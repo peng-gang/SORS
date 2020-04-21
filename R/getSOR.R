@@ -1,5 +1,5 @@
 
-getSOR <- function(CNVInfo){
+getSORs <- function(CNVInfo){
   idxDEL <- CNVInfo$CNV == "DEL"
   idxAMP <- CNVInfo$CNV == "AMP"
   CNVInfo$CNV[idxDEL] <- 0.5
@@ -9,9 +9,9 @@ getSOR <- function(CNVInfo){
   info <- NULL
   for(i in 1:nrow(CNVInfo)){
     infoTmp <- paste(
-      CNVInfo$chr[i],
-      CNVInfo$start[i],
-      CNVInfo$end[i],
+      CNVInfo$Chr[i],
+      CNVInfo$Start[i],
+      CNVInfo$End[i],
       CNVInfo$CNV[i],
       CNVInfo$Sample[i],
       sep = "\t"
@@ -28,9 +28,9 @@ getSOR <- function(CNVInfo){
     } else {
       rlt <- cbind(rlt, as.character(tmp[[i]]))
     }
-    colnames(rlt) <- cn
-    rlt <- data.frame(rlt, stringsAsFactors = FALSE)
   }
+  rlt <- data.frame(rlt, stringsAsFactors = FALSE)
+  colnames(rlt) <- cn
   
   for(i in 4:ncol(rlt)){
     idxDEL <- as.numeric(rlt[,i]) < 1
@@ -40,5 +40,7 @@ getSOR <- function(CNVInfo){
     rlt[(!idxDEL) & (!idxAMP), i] <- "NONE"
   }
   
+  rlt$Start <- as.numeric(rlt$Start)
+  rlt$End <- as.numeric(rlt$End)
   rlt
 }

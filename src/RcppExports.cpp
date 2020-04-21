@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // getSORC
 Rcpp::DataFrame getSORC(Rcpp::CharacterVector cnvInfo);
-RcppExport SEXP _SOR_getSORC(SEXP cnvInfoSEXP) {
+RcppExport SEXP _SORS_getSORC(SEXP cnvInfoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -18,11 +18,11 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_SOR_getSORC", (DL_FUNC) &_SOR_getSORC, 1},
+    {"_SORS_getSORC", (DL_FUNC) &_SORS_getSORC, 1},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_SOR(DllInfo *dll) {
+RcppExport void R_init_SORS(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

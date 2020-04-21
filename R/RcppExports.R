@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 getSORC <- function(cnvInfo) {
-    .Call(`_SOR_getSORC`, cnvInfo)
+    .Call(`_SORS_getSORC`, cnvInfo)
 }
 
