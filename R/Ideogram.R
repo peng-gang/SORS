@@ -1,6 +1,7 @@
 # Ideogram
 library(circlize)
 library(karyoploteR)
+library(stringr)
 
 ideogramCircle <- function(
   SORs, 
@@ -24,7 +25,11 @@ ideogramCircle <- function(
     stringsAsFactors = FALSE
   )
   
-  bedFry$chr <- paste0("chr", bedFry$chr)
+  if(toupper(substr(bedFry$chr[1], start=1, stop = 3)) == "CHR"){
+    str_sub(bedFry$chr, 1, 3) <- "chr"
+  } else {
+    bedFry$chr <- paste0("chr", bedFry$chr)
+  }
   bedFry <- bedFry[bedFry$value1!=0,]
   
   if(is.null(ylim)){
@@ -75,7 +80,7 @@ ideogram <- function(
   includeAB = TRUE,
   abAmp = NULL,
   abDel = NULL
-  ){
+){
   nSample = ncol(SORs) - 3
   fryTotal <- rowSums(SORs[,4:(3+nSample)] != "NONE")/nSample
   fryAmp <- rowSums(SORs[,4:(3+nSample)] == "AMP")/nSample
@@ -89,7 +94,11 @@ ideogram <- function(
     stringsAsFactors = FALSE
   )
   
-  bedFry$chr <- paste0("chr", bedFry$chr)
+  if(toupper(substr(bedFry$chr[1], start=1, stop = 3)) == "CHR"){
+    str_sub(bedFry$chr, 1, 3) <- "chr"
+  } else {
+    bedFry$chr <- paste0("chr", bedFry$chr)
+  }
   bedFry <- bedFry[bedFry$fry!=0,]
   
   bedAmp <- bedFry[bedFry$fry>0,]
@@ -133,13 +142,19 @@ ideogram <- function(
          col = colorDel, border = NA)
   
   if(includeAB){
+    ranges <- getGenomeAndMask(hg)$genome@ranges
+    seqName <- as.character(getGenomeAndMask(hg)$genome@seqnames)
+    chrSel <- paste0("chr", c(1:22, "X", "Y"))
+    idx <- match(chrSel, seqName)
+    lablePos <- ranges@width[idx] - 3000000
+    
     kpAbline(kp, r0=0, r1=2, h=abAmp, col = "grey", lty = 3)
-    kpText(kp, chr = paste0("chr", c(1:22, "X", "Y")), y=0.3, x=chrom.length, r0=0, r1=2, 
+    kpText(kp, chr = chrSel, y= abAmp, x=lablePos, r0=0, r1=2, 
            col="#444444", labels=labelAmp, cex=0.6, pos=4, srt=0)
     
     
     kpAbline(kp, r0=0, r1=2, h=abDel, data.panel = 2, col = "grey", lty = 3)
-    kpText(kp, chr = paste0("chr", c(1:22, "X", "Y")), y=0.7, x=chrom.length, data.panel = 2, r0=0, r1=2, 
+    kpText(kp, chr = chrSel, y= abDel, x=lablePos, data.panel = 2, r0=0, r1=2, 
            col="#444444", labels=labelDel, cex=0.6, pos=4, srt=0)
   }
   

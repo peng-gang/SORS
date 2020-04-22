@@ -3,7 +3,7 @@
 library(ComplexHeatmap)
 library(circlize)
 
-heatmapSORs <- function(SORs, weight = FALSE, showLegend = TRUE){
+heatmapSORs <- function(SORs, weight = FALSE, columnKM = 1, showLegend = TRUE){
   nSample = ncol(SORs) - 3
   x <- matrix(0, nrow = nrow(SORs), ncol = nSample)
   x[SORs[, 4:(nSample+3)] == "DEL"] <- -1
@@ -14,7 +14,7 @@ heatmapSORs <- function(SORs, weight = FALSE, showLegend = TRUE){
     x <- x*wt
     x <- x/max(wt)
   }
-
+  
   rownames(x) <-  paste(SORs$Chr, SORs$Start, SORs$End, sep = "_")
   colnames(x) <- colnames(SORs)[4:(nSample+3)]
   
@@ -39,9 +39,11 @@ heatmapSORs <- function(SORs, weight = FALSE, showLegend = TRUE){
                 col = col_fun,
                 row_split = chrOrder, row_title_rot = 0,
                 row_gap = unit(0, "mm"),  border = TRUE, 
-                how_heatmap_legend = showLegend, 
+                column_km = columnKM,
+                column_km_repeats = ifelse(columnKM==1, 1, 20),
+                show_heatmap_legend = showLegend, 
                 use_raster = FALSE)
-                #top_annotation = ha)
+  
+  #top_annotation = ha)
   draw(hm)
 }
-
