@@ -3,9 +3,9 @@ Type: Package
 Title: Copy Number Analysis with Smallest Overlasp Regions (SORs)
 Version: 0.0.1
 Date: 2020-04-20
-Author@R: c(person("Gang", "Peng", email = "michael.gang.peng@gmail.com", role = c("aut", "cre")),
+Author@R: c(person("Gang", "Peng", email = "gang.peng@yale.edu", role = c("aut", "cre")),
             person("Yishuo", "Tang", email = "yishuo.tang@yale.edu", role = "aut"))
-Maintainer: Gang Peng <michael.gang.peng@gmail.com>
+Maintainer: Gang Peng <gang.peng@yale.edu>
 Description: This package finds out the smallest overlap regions (SORs) of the CNVs between different samples. The frequency of SORs will be shown in ideogram. The package also provides functions for clustering and survival analysis based on SORs. 
 License: GPL (>= 2)
 BiocViews:
