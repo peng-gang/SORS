@@ -1,4 +1,17 @@
-
+#' Get smallest overlap regions of copy numbers between samples
+#' 
+#' @param CNVInfo A data frame of copy number variation (CNV) information. Each row of the data frame 
+#' is a record for a copy number variation. The data frame includs at leat 5 columns, Sample, Chr, Start, End, and CNV.
+#' Sample: id of samples; Chr: chrosome of CNV; Start: start position of CNV; End: end position of CNV;
+#' CNV: copy number type (DEL or AMP). 
+#' @return Smallest overlap regions of copy number variation between samples. The first 3 columns are
+#' chromosome, start and end position of SORs. The columns from 4 to the last show whether the sample 
+#' has CNV or not at the specific SOR. NONE: the sample does not have CNV in the SOR; AMP: the sample has 
+#' amplification CNV in the SOR; DEL: the sample has deletion CNV in the SOR.
+#' @example 
+#' data(SORsExample)
+#' SORs <- getSORs(CNVInfo)
+#' 
 getSORs <- function(CNVInfo){
   idxDEL <- CNVInfo$CNV == "DEL"
   idxAMP <- CNVInfo$CNV == "AMP"

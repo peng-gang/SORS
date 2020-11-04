@@ -3,6 +3,18 @@
 library(ComplexHeatmap)
 library(circlize)
 
+#' Draw heatmap based on SORs
+#' 
+#' @param SORs A data frame including SOR information. Please check the output of function \code{getSORs} 
+#' for details. 
+#' @param weight Whether to use the length of SOR as the weight for clustering. If TURE, longer SORs will
+#' have higher weight during the clustering. Default: FALSE
+#' @param columnKM Apply k-means clustering on columns.  If the value is larger than 1, the heatmap 
+#' will be split by columns according to the k-means clustering. For each column slice, hierarchical clustering 
+#' is still applied. Default: 1. 
+#' @param showLegend Whether to show heatmap legend. Default: TRUE
+#' @return heatmap of SORs
+#' @seealso \code{getSORs}
 heatmapSORs <- function(SORs, weight = FALSE, columnKM = 1, showLegend = TRUE){
   nSample = ncol(SORs) - 3
   x <- matrix(0, nrow = nrow(SORs), ncol = nSample)
@@ -24,15 +36,6 @@ heatmapSORs <- function(SORs, weight = FALSE, columnKM = 1, showLegend = TRUE){
     col_fun <- colorRamp2(c(-1, 0, 1), c("red", "white", "blue"))
   }
   
-  
-  # ha = HeatmapAnnotation(
-  #   Grade = G,
-  #   Recurrence = R,
-  #   BCLC = BCLC,
-  #   col = list(Grade = c("G2" = "brown1", "G3" = "brown3"),
-  #              Recurrence = c("R" = "darkorange3", "NR" = "darkorange1"),
-  #              BCLC = c("A" = "gray75", "B" = "gray50", "C" = "gray25")))
-  
   chrOrder <- factor(SORs$Chr, levels = unique(SORs$Chr), ordered = TRUE)
   hm <- Heatmap(x, name = "CNV",
                 cluster_rows = FALSE, show_row_names = FALSE,
@@ -44,6 +47,5 @@ heatmapSORs <- function(SORs, weight = FALSE, columnKM = 1, showLegend = TRUE){
                 show_heatmap_legend = showLegend, 
                 use_raster = FALSE)
   
-  #top_annotation = ha)
   draw(hm)
 }

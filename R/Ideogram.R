@@ -3,11 +3,23 @@ library(circlize)
 library(karyoploteR)
 library(stringr)
 
+#' Circle ideogram of CNV frequency for SORs
+#' 
+#' @param SORs A data frame including SOR information. Please check the output of function \code{getSORs} 
+#' for details. 
+#' @param genome A UCSC style genome name. It supports the following genome: hg18, hg19, hg38, 
+#' mm10, and mm38. Default: "hg19".
+#' @param  ylim The y limits (y1, y2) of the plot
+#' @param chromosomeIndex Subset of chromosomes, also used to reorder chromosomes.
+#' @param atY The points at which tick-marks of Y axis are to be drawn
+#' @param colorAmp Color to show amplification
+#' @param colorDel Color to show deletion
+
 ideogramCircle <- function(
   SORs, 
-  hg = "hg18", 
+  genome = "hg19", 
   ylim = NULL, 
-  chromosomeIndex = NULL,
+  chromosomeIndex = usable_chromosomes(genome),
   atY = NULL,
   colorAmp = "blue",
   colorDel = "red"){
@@ -41,6 +53,10 @@ ideogramCircle <- function(
     chromosomeIndex <- paste0("chr", c(1:22, "X", "Y"))
   }
   
+  lableY <- NULL
+  if(max(abs(atY) > 1)){
+    atY <- NULL
+  }
   if(is.null(atY)){
     stp <- ceiling(max(abs(ylim))*5)/10
     if(stp < -ylim[1]){
@@ -52,12 +68,14 @@ ideogramCircle <- function(
     }
     
     lableY <- paste0(abs(atY) * 100, "%")
+  } else {
+    lableY <- paste0(abs(atY) * 100, "%")
   }
   
   circos.par(start.degree=90,
              gap.degree = c(rep(1, 23), 10))
   circos.initializeWithIdeogram(plotType = c("labels"),
-                                species=hg, chromosome.index = chromosomeIndex)
+                                species=genome, chromosome.index = chromosomeIndex)
   circos.genomicTrack(bedFry, ylim = ylim, bg.border = NA,
                       panel.fun = function(region, value, ...) {
                         circos.genomicRect(region, value, ytop.column = 1, ybottom = 0, 
@@ -74,7 +92,7 @@ ideogramCircle <- function(
 
 ideogram <- function(
   SORs,
-  hg = "hg18", 
+  genome = "hg18", 
   colorAmp = "blue",
   colorDel = "red",
   includeAB = TRUE,
@@ -129,7 +147,7 @@ ideogram <- function(
   pp$data1outmargin <- 150
   pp$data2outmargin <- 150
   
-  kp <- plotKaryotype(genome = hg, plot.type = 2, plot.params = pp, #labels.plotter = NULL,
+  kp <- plotKaryotype(genome = genome, plot.type = 2, plot.params = pp, #labels.plotter = NULL,
                       chromosomes = paste0("chr", c("Y", "X", 22:1)))
   
   #kpText(kp, chr = paste0("chr", c(1:22, "X", "Y")), y=y.pos, x=chrom.length, r0=0, r1=2, 
@@ -142,8 +160,8 @@ ideogram <- function(
          col = colorDel, border = NA)
   
   if(includeAB){
-    ranges <- getGenomeAndMask(hg)$genome@ranges
-    seqName <- as.character(getGenomeAndMask(hg)$genome@seqnames)
+    ranges <- getGenomeAndMask(genome)$genome@ranges
+    seqName <- as.character(getGenomeAndMask(genome)$genome@seqnames)
     chrSel <- paste0("chr", c(1:22, "X", "Y"))
     idx <- match(chrSel, seqName)
     lablePos <- ranges@width[idx] - 3000000

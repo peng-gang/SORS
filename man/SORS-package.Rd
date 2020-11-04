@@ -1,28 +1,27 @@
-\name{SOR-package}
-\alias{SOR-package}
-\alias{SOR}
+\name{SORS-package}
+\alias{SORS-package}
+\alias{SORS}
 \docType{package}
 \title{
-  A short title line describing what the package does
+  Smalleset overlap regions for copy number analysis
 }
 \description{
-  A more detailed description of what the package does. A length
-  of about one to five lines is recommended.
+  The package finds out the smallest overlap regions (SORs) of copy number between samples. The functions to show heatmap and ideogram based on SORs are also provided in this package. 
 }
 \details{
   This section should provide a more detailed overview of how to use the
   package, including the most important functions.
 }
 \author{
-Your Name, email optional.
+Gang Peng
 
-Maintainer: Your Name <your@email.com>
+Maintainer: Gang Peng <gang.peng@yale.edu>
 }
 \references{
   This optional section can contain literature or other references for
   background information.
 }
-\keyword{ package }
+\keyword{ CNV, SOR }
 \seealso{
   Optional links to other man pages
 }
